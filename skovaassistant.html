@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skova services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--accent-color: #e2cfb6;
+--bg-color: #0a0a0a;
+--text-color: #f8f8f2;
+--card-bg: rgba(226, 207, 182, 0.05);
+--nav-blur: rgba(10,10,10,0.8);
+--border-color: rgba(226, 207, 182, 0.08);
+--rotate-color: rgba(226, 207, 182, 0.15);
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'inter', sans-serif;
+letter-spacing: 0.06em;
+text-transform: lowercase;
+list-style: none;
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+scroll-behavior: smooth;
+}
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+line-height: 1.7;
+overflow-x: hidden;
+overflow-y: scroll;
+cursor: none;
+}
+.nav {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+background: var(--nav-blur);
+backdrop-filter: blur(12px);
+z-index: 1000;
+padding: 3rem 0;
+border-bottom: 1px solid var(--border-color);
+}
+.nav-content {
+max-width: 1200px;
+margin: 0 auto;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 0 2rem;
+}
+.nav-link {
+color: var(--text-color);
+text-decoration: none;
+margin: 0 2.5rem;
+font-weight: 300;
+font-size: 1rem;
+transition: color 0.3s ease;
+position: relative;
+}
+.nav-link:hover { color: var(--accent-color);}
+.nav-link::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1px;
+background: var(--accent-color);
+transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+section {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10rem 2rem;
+opacity: 0;
+transform: translateY(50px);
+transition: opacity 0.8s ease, transform 0.8s ease;
+}
+section.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.content {
+max-width: 1200px;
+width: 100%;
+text-align: center;
+}
+h1 {
+font-weight: 500;
+margin-bottom: 0.5rem;
+line-height: 1.1;
+font-size: 6rem;
+font-family: 'playfair display', serif;
+white-space: nowrap;
+}
+h2 {
+font-size: 3.5rem;
+font-weight: 400;
+margin-bottom: 4rem;
+font-family: 'playfair display', serif;
+}
+.accent { color: var(--accent-color); }
+.service-carousel {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 2rem;
+padding: 2rem;
+}
+.service-card {
+background: var(--card-bg);
+padding: 2.5rem;
+border: 1px solid var(--border-color);
+border-radius: 12px;
+transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+.service-card:hover {
+transform: translateY(-8px);
+border-color: var(--accent-color);
+background: rgba(226, 207, 182, 0.08);
+}
+.service-card h3 {
+margin-bottom: 2rem;
+color: var(--accent-color);
+font-size: 1.5rem;
+font-weight: 500;
+text-align: left;
+letter-spacing: 0.16em;
+}
+.service-card .service-list {
+margin-top: 1rem;
+opacity: 0.90;
+}
+.service-card .service-list li{
+font-size: 1.1rem;
+text-align: left;
+margin-bottom: 1rem;
+position: relative;
+padding-left: 1.5rem;
+}
+.service-card .service-list li:before {
+content: "•";
+color: var(--accent-color);
+position: absolute;
+left: 0;
+}
+.reviews-container {
+margin-top: 6rem;
+position: relative;
+width: 100%;
+height: auto;
+overflow-x: hidden;
+}
+.review-track {
+display: flex;
+width: 100000px;
+position: relative;
+transition: transform 0.7s ease-out;
+overflow: hidden;
+}
+.review-card {
+min-width: 100vw;
+height: auto;
+padding: 13rem 2.5rem;
+text-align: left;
+box-sizing: border-box;
+display: flex;
+align-items: center;
+position: relative;
+}
+.review-card::before {
+content: "";
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+background: var(--rotate-color);
+width: 120px;
+height: 120px;
+clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+z-index: -1;
+opacity: 0.2;
+animation: rotateTriangle 30s linear infinite;
+filter: blur(10px);
+}
+@keyframes rotateTriangle {
+100%{
+transform: translateX(-50%) rotate(360deg);
+}
+}
+.review-inner {
+max-width: 700px;
+display: inline-block;
+background: var(--nav-blur);
+border: 1px solid var(--border-color);
+backdrop-filter: blur(10px);
+padding: 4rem;
+}
+.review-text {
+font-style: italic;
+font-size: 1.4rem;
+line-height: 1.8;
+font-family: 'playfair display', serif;
+font-weight: 300;
+position: relative;
+overflow: hidden;
+}
+.review-text span{
+display: inline-block;
+transition: transform 0.5s cubic-bezier(0.2, 0.5, 0.3, 1.2) ;
+opacity: 0;
+transform: translate3d(50px, -30px, 0);
+}
+.review-card.active .review-text span {
+transform: translate3d(0, 0, 0);
+opacity: 1;
+}
+.review-author {
+color: var(--accent-color);
+font-weight: 400;
+letter-spacing: 0.1em;
+margin-top: 2rem;
+}
+.cta-button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 1.2rem 2.8rem;
+background: transparent;
+color: var(--text-color);
+text-decoration: none;
+border: 1px solid var(--accent-color);
+border-radius: 100px;
+transition: all 0.3s ease;
+position: relative;
+overflow: hidden;
+margin-top: 6rem;
+letter-spacing: 0.1em;
+}
+.cta-button:hover {
+background: var(--accent-color);
+color: var(--bg-color);
+}
+.about-text {
+max-width: 900px;
+margin: 0 auto;
+font-size: 1.3rem;
+margin-bottom: 7rem;
+font-family: 'playfair display', serif;
+font-weight: 300;
+line-height: 1.8;
+}
+.custom-cursor{
+position: fixed;
+top:0;
+left:0;
+width:30px;
+height:30px;
+border-radius:50%;
+background: rgba(226, 207, 182, 0.35);
+pointer-events:none;
+z-index: 10000000;
+transform: translate(-50%,-50%);
+transition: all 0.1s ease;
+}
+#home{
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+padding: 0;
+overflow: hidden;
+}
+.hero-content{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+position: relative;
+z-index: 2;
+}
+.hero-title{
+font-size: 7rem;
+font-family: 'playfair display', serif;
+margin-bottom: 2rem;
+opacity: 0;
+transform: translateY(30px);
+transition: all 1s ease;
+text-align: center;
+}
+#home.visible .hero-title{
+opacity: 1;
+transform: translateY(0);
+}
+.hero-subtitle{
+font-size: 1.8rem;
+opacity: 0.9;
+margin-bottom: 3rem;
+opacity: 0;
+transform: translateY(30px);
+transition: all 1s ease 0.2s;
+}
+#home.visible .hero-subtitle{
+opacity: 1;
+transform: translateY(0);
+}
+.hero-cta{
+opacity: 0;
+transform: translateY(30px);
+transition: all 1s ease 0.4s;
+}
+#home.visible .hero-cta{
+opacity: 1;
+transform: translateY(0);
+}
+.hero-background{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1;
+}
+.hero-circle{
+position: absolute;
+width: 600px;
+height: 600px;
+border-radius: 50%;
+background: var(--accent-color);
+opacity: 0.03;
+filter: blur(80px);
+animation: float 20s infinite ease-in-out;
+}
+.hero-circle:nth-child(1){
+top: -200px;
+left: -200px;
+}
+.hero-circle:nth-child(2){
+bottom: -200px;
+right: -200px;
+animation-delay: -10s;
+}
+@keyframes float{
+0%, 100%{
+transform: translate(0, 0);
+}
+50%{
+transform: translate(50px, 50px);
+}
+}
+.abstract-nav{
+position: fixed;
+top: 40%;
+right: -100px;
+z-index: 100000;
+transition: all 0.6s ease;
+}
+.abstract-nav.visible{
+right: 40px;
+}
+.abstract-nav-item{
+margin-bottom: 2rem;
+border: 1px solid var(--border-color);
+padding: 0.8rem;
+border-radius: 50%;
+background: var(--nav-blur);
+backdrop-filter: blur(10px);
+width: 50px;
+height: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.abstract-nav-item a{
+display: block;
+text-align: center;
+line-height: 0;
+}
+.abstract-nav-item:hover{
+background: var(--accent-color);
+}
+@media (max-width: 768px) {
+.hero-title { font-size: 5rem; }
+.hero-subtitle { font-size: 1.4rem; }
+h1 { font-size: 4.2rem; }
+h2 { font-size: 2.8rem; }
+.nav-link { margin: 0 1.8rem; font-size: 0.9rem; }
+section { padding: 7rem 1.5rem; }
+.service-card { padding: 2.3rem; }
+}
+@media (max-width: 576px) {
+.hero-title { font-size: 3.5rem; }
+.hero-subtitle { font-size: 1.2rem; }
+h1 { font-size: 3.4rem;}
+h2 { font-size: 2.1rem;}
+.nav-link { margin: 0 1.2rem; font-size: 0.8rem; }
+.service-card { padding: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="custom-cursor"></div>
+<nav class="nav">
+<div class="nav-content">
+<a href="#home" class="nav-link">home</a>
+<a href="#about" class="nav-link">about</a>
+<a href="#services" class="nav-link">services</a>
+<a href="#reviews" class="nav-link">reviews</a>
+<a href="#contact" class="nav-link">contact</a>
+</div>
+</nav>
+<section id="home">
+<div class="hero-background">
+<div class="hero-circle"></div>
+<div class="hero-circle"></div>
+</div>
+<div class="hero-content">
+<h1 class="hero-title">welcome to <span class="accent">skova</span></h1>
+<p class="hero-subtitle">your executive superpower in nyc</p>
+<a href="#contact" class="cta-button hero-cta">get started</a>
+</div>
+</section>
+<div class="abstract-nav" id="abstractNav">
+<div class="abstract-nav-item">
+<a href="#about">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>
+</a>
+</div>
+<div class="abstract-nav-item">
+<a href="#services">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+</a>
+</div>
+<div class="abstract-nav-item">
+<a href="#reviews">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</a>
+</div>
+<div class="abstract-nav-item">
+<a href="#contact">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+</a>
+</div>
+</div>
+<section id="about">
+<div class="content">
+<h2>
+about <span class="accent">us</span>
+</h2>
+<div class="about-text">
+<p>as a two-person team based in nyc, we offer reliable (truly), tech-savvy, and attentive-to-detail executive assistant, personal assistant, and virtual assistant services.</p>
+<p><br><br>as executive assistants, we are an extension of the executive, and there is no task too small or too big to fulfill that responsibility: we're happy to help delegate the necessary but time-consuming tasks however we can.</p>
+<p>ad-hoc, on-call service available: running on a deadline and need someone to help this week? reach out!</p>
+</div>
+</div>
+</section>
+<section id="services">
+<div class="content">
+<h2 style="display: inline-block; text-align: center;">
+<span style="display: inline-block;">our </span> <span class="accent" style="display: inline-block; text-align: center;">services</span>
+</h2>
+<div class="service-carousel">
+<div class="service-card">
+<h3>management</h3>
+<ul class="service-list">
+<li>project management</li>
+<li>expense management</li>
+<li>inbox organization/management</li>
+<li>digital file organization</li>
+<li>calendar management</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>social & events</h3>
+<ul class="service-list">
+<li>social media management</li>
+<li>event coordinating</li>
+<li>deck creation</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>administrative</h3>
+<ul class="service-list">
+<li>data entry</li>
+<li>travel & much more</li>
+<li>note-taking</li>
+<li>digital filing</li>
+<li>liaising between teams</li>
+<li>running errands</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>support</h3>
+<ul class="service-list">
+<li>research & data compilation</li>
+<li>updating crm systems</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>bookings</h3>
+<ul class="service-list">
+<li>booking reservations & appointments</li>
+<li>scheduling meetings</li>
+<li>managing contacts</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>documentation</h3>
+<ul class="service-list">
+<li>document formatting</li>
+<li>pre-meeting briefs/agendas</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>lifestyle</h3>
+<ul class="service-list">
+<li>ordering groceries</li>
+<li>website updates</li>
+<li>ad-hoc personal assistance</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>finances & travel</h3>
+<ul class="service-list">
+<li>shopping & price comparison</li>
+<li>budgeting</li>
+<li>itinerary creation</li>
+<li>invoice creation</li>
+<li>personal finance management</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>technical</h3>
+<ul class="service-list">
+<li>shopify support</li>
+<li>mailchimp support</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>creativity</h3>
+<ul class="service-list">
+<li>drafting email replies</li>
+<li>assisting in proposal creation</li>
+<li>proofreading & editing</li>
+<li>content ideas & lists</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>logistics</h3>
+<ul class="service-list">
+<li>move supervision</li>
+<li>supervising & coordinating with contractors</li>
+<li>finding restaurants</li>
+<li>sourcing service providers</li>
+</ul>
+</div>
+<div class="service-card">
+<h3>additional support</h3>
+<ul class="service-list">
+<li>employee onboarding</li>
+<li>doctor office pick-up</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="reviews">
+<div class="content">
+<h2 style="display: inline-block; text-align: center;">
+<span style="display: inline-block;">client </span> <span class="accent" style="display: inline-block; text-align: center;">reviews</span>
+</h2>
+<div class="reviews-container" id="reviewsContainer">
+<div class="review-track" id="reviewTrack">
+</div>
+</div>
+</div>
+</section>
+<section id="contact">
+<div class="content">
+<h2 style="display: inline-block; text-align: center;">
+<span style="display: inline-block;">get in </span> <span class="accent" style="display: inline-block; text-align: center;">touch</span>
+</h2>
+<p style="font-size: 1.4rem; margin-bottom: 0.8rem; opacity: 0.8;">email us at: <a href="mailto:info@skovaservices.com" class="accent">info@skovaservices.com</a></p>
+<p style="font-size: 1.2rem; opacity: 0.7;">response time: within 24 hours</p>
+<a href="mailto:info@skovaservices.com" class="cta-button">submit inquiry</a>
+</div>
+</section>
+<script>
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+}
+});
+}, {
+threshold: 0.1
+});
+document.querySelectorAll('section').forEach(section => {
+observer.observe(section);
+});
+document.querySelectorAll('h2').forEach(heading => {
+const letters = heading.textContent.split('').map(char => `<span>${char}</span>`);
+heading.innerHTML = letters.join('');
+const observer = new IntersectionObserver(entries => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+heading.classList.add('active');
+}
+});
+}, {threshold: 0.2});
+observer.observe(heading)
+})
+// Smooth scroll for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const target = document.querySelector(this.getAttribute('href'));
+target.scrollIntoView({
+behavior: 'smooth'
+});
+});
+});
+const reviews = [
+{
+text: "i have worked with many assistants and lana is the creme de la creme. we've been working together on a weekly part-time basis and my plan is to continue working with her forever. she is excellent with communication and keeps me accountable to my goals. we're always moving forward and it's been like night and day since finding her. it feels like a miracle!",
+author: "giselle o."
+},
+{
+text: "having worked with many, i can confidently say lana is the best personal assistant i've had the pleasure of working with over the past ten years. it's so hard to find someone who is intuitive, punctual, intelligent, and able to roll with the punches. i couldn't recommend her more strongly!",
+author: "anthony v."
+},
+{
+text: "she expertly and adeptly managed a move for me because i was not in town. i never once worried about how things would go because lana was constantly thinking ahead and taking the initiative. she is punctual, an excellent communicator, and manages expectations.",
+author: "kamuti k."
+},
+{
+text: "after four weeks of working together i'm confident that Lana can tackle any task with a smile and precision. She's such a pleasure to work with, I highly recommend. She impressed us with her organizing and spreadsheet skills for our domestic budgeting, as well as attention to detail.",
+author: "calico w."
+},
+{
+text: "amazing!!! worth every dollar! lana is professional, timely, and knows how to communicate. i hired Lana and two other assistants for a large project and she took the lead. Originally only able to work until a certain time but then stayed until the project was completed. she saved the day.",
+author: "janeth d."
+},
+{
+text: "lana is stellar! Super communication, 100% reliable, and a pleasure to work with. Thank you again, Lana, for taking care of so much for me and keeping me informed before, during, and after the task. I sincerely appreciate your help!",
+author: "marshall k."
+},
+{
+text: "first time using taskrabbit, and I needed a reliable and trustworthy assistant. Lana delivered precisely that. I strongly recommend her!",
+author: "vz."
+},
+{
+text: "Lana was great to work with on my inbox project. She was very efficient, had excellent communication skills, and exceeded my expectations upon task completion. Thank you, Lana!",
+author: "manuel g."
+},
+{
+text: "Excellent. Lana is efficient, organized, and punctual. She helped me with a variety of tasks. Because of all that she accomplished in a short period of time, I feel much lighter. I will definitely work with her again.",
+author: "angel h."
+},
+{
+text: "Lana was reliable, communicative, double-checked to make sure it was done right, and worked efficiently.",
+author: "john r."
+},
+{
+text: "Lana was incredible from start to finish. I had to somehow remove items from my shipping company, pick them up while coordinating with my storage company. She helped me coordinate the pick-up on the ground, get rid of some excess, and safely see my stuff in transit to australia. Super communicative and friendly with a lot of common sense. Would def hire again.",
+author: "kate a."
+},
+{
+text: "Lana was super professional, arriving right on time and working diligently throughout to complete the task. She impressed us with her organizing and spreadsheet skills for our domestic budgeting, as well as attention to detail. Her support was hugely helpful!",
+author: "emilie f."
+},
+{
+text: "Lana is fantastic! Thorough, so fast, super smart, and just makes you feel like you have a superpower (her). Highly recommend!",
+author: "karen i."
+},
+{
+text: "Having worked with many, I can confidently say Lana is the best personal assistant I've had the pleasure of working with over the past ten years. It's so hard to find someone who is intuitive, punctual, intelligent, and able to roll with the punches. I couldn't recommend her more strongly!",
+author: "anthony v."
+},
+{
+text: "Always very precise, thank you for your help, Lana, appreciate it a lot!",
+author: "karolina k."
+},
+{
+text: "Lana was so professional, quick in her service and responses. Her work is meticulous, and she shows such care in her work. Will definitely hire her again for anything that needs attention to detail. Made my son's birthday extra special.",
+author: "ara p."
+},
+{
+text: "Thorough and prolific.",
+author: "tyler m."
+},
+{
+text: "Lana is great! I had her pick me up after my surgery on a snow day. She assured me that she would be there for me, and she was right there waiting for me. That was so wonderful! As I was not 100%, I will definitely book her again!",
+author: "tricia l."
+},
+{
+text: "Lana is amazing. Professional, on time, accommodating, and friendly. She is my #1 tasker!!",
+author: "amanda p.**"
+}
+];
+const reviewsContainer = document.getElementById('reviewsContainer');
+const reviewTrack = document.getElementById('reviewTrack');
+let currentReviewIndex = 0;
+function createReviewElement(review, index) {
+const div = document.createElement('div');
+div.className = 'review-card';
+const text = review.text.split(' ').map((word, i) => `<span>${word}</span>`).join(' ');
+div.innerHTML = `
+<div class="review-inner">
+<p class="review-text" style="transition-delay: ${0.03 * index}s">${text}</p>
+<p class="review-author">${review.author}</p>
+</div>
+`;
+return div;
+}
+reviews.forEach((review, i) => {
+const reviewElement = createReviewElement(review, i)
+reviewTrack.appendChild(reviewElement);
+})
+function showNextReview(){
+const oldReview = reviewTrack.querySelector('.review-card.active');
+if (oldReview) {
+oldReview.classList.remove('active');
+}
+const cards = reviewTrack.querySelectorAll('.review-card');
+const newReview = cards[currentReviewIndex];
+newReview.classList.add('active');
+reviewTrack.style.transform = `translateX(-${currentReviewIndex* 100}vw)`;
+currentReviewIndex = (currentReviewIndex + 1) % cards.length;
+}
+showNextReview();
+setInterval(showNextReview, 6000);
+// CUSTOM CURSOR
+const cursor = document.querySelector('.custom-cursor')
+window.addEventListener('mousemove', (e)=>{
+cursor.style.left = e.clientX + 'px';
+cursor.style.top = e.clientY + 'px';
+})
+window.addEventListener('mousedown', ()=>{
+cursor.style.transform = `translate(-50%, -50%) scale(0.7)`;
+})
+window.addEventListener('mouseup', ()=>{
+cursor.style.transform = `translate(-50%, -50%) scale(1)`;
+})
+window.addEventListener('mouseout', ()=>{
+cursor.style.display = "none"
+})
+window.addEventListener('mouseover', ()=>{
+cursor.style.display = "block"
+})
+
+window.addEventListener('scroll', function() {
+          let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          if (scrollTop > lastScrollTop) {
+           abstractNav.classList.add('visible');
+         } else {
+              abstractNav.classList.remove('visible');
+          }
+         lastScrollTop = scrollTop;
+      })
+  </script>
+</body>
+</html>
